@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  LambdaLayers
+
+  Sample SAM Template for LambdaLayers
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 5
+
+Resources:
+  Service1Function:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: app/
+      Handler: service1.lambda_handler
+      Runtime: python3.7
+      Layers:
+        - !Ref RequestsLayer
+
+  Service2Function:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: app/
+      Handler: service2.lambda_handler
+      Runtime: python3.7
+      Layers:
+        - !Ref RequestsLayer
+
+  RequestsLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: RequestsLayer
+      Description: RequestsLayer
+      ContentUri: layers/requests-layer
+      CompatibleRuntimes:
+        - python3.7
+      LicenseInfo: "Available under the MIT-0 license."
+      RetentionPolicy: Retain
